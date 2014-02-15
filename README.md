@@ -1,0 +1,4 @@
+sudoku
+======
+
+Optimized puzzle solver
