@@ -1,0 +1,22 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:16.0'
+}
+
+defaultTasks 'all'
+
+task all (dependsOn: build)
+
+jar
+{
+    manifest
+    {
+        attributes 'Main-Class': 'com.dreamsoft.app.AppMain'
+        attributes 'Main-Class': 'com.my.package.Main'
+    }
+}
