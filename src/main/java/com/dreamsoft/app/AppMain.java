@@ -9,7 +9,7 @@ public class AppMain
     {
         try
         {
-            new Solver().solve().print();
+            new Solver().solve().print().printCandidates();
         }
         catch (InterruptedException e)
         {

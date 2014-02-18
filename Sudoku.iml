@@ -13,6 +13,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="Gradle: guava-16.0" level="project" />
+    <orderEntry type="library" exported="" scope="PROVIDED" name="Gradle: lombok-1.12.4" level="project" />
   </component>
 </module>
 

@@ -9,6 +9,8 @@ import com.dreamsoft.data.Puzzle;
  */
 public class Printer
 {
+    private final Puzzle puzzle = Puzzle.getInstance();
+
     public void printResult()
     {
         System.out.println("----------------------");
@@ -18,9 +20,11 @@ public class Printer
             for (Integer j=1; j<=9; j++)
             {
                 String val = " ";
-                Integer value = Puzzle.getInstance().getValue(i, j);
+                Integer value = puzzle.getValue(i, j);
                 if (value != null)
+                {
                     val = String.valueOf(value);
+                }
                 System.out.print(val + " " );
                 if (j % 3 == 0)
                 {
@@ -46,7 +50,7 @@ public class Printer
                 System.out.println("=========================================");
             }
         }
-        System.out.println("Solved count: " + Puzzle.getInstance().getValueCount());
+        System.out.println("Solved count: " + puzzle.getValueCount());
     }
 
     private void printRow(int row)
@@ -78,9 +82,9 @@ public class Printer
     {
         for (int index=subRow; index<subRow+3; index++)
         {
-            if (Puzzle.getInstance().getCandidateValue(row, column, index) != 0)
+            if (puzzle.getCandidates(row, column).size() > index)
             {
-                System.out.print(Puzzle.getInstance().getCandidateValue(row, column, index));
+                System.out.print(puzzle.getCandidates(row, column).get(index));
             }
             else
             {

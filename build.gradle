@@ -4,8 +4,18 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    provided {
+        transitive = false
+    }
+    compile {
+        extendsFrom provided
+    }
+}
+
 dependencies {
     compile 'com.google.guava:guava:16.0'
+    provided 'org.projectlombok:lombok:1.12.4'
 }
 
 defaultTasks 'all'

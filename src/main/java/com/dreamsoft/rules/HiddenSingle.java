@@ -5,20 +5,9 @@ import com.dreamsoft.data.Puzzle;
 /**
  * Created by Dreamuth on 2/16/14.
  */
-public class HiddenSingles implements Runnable
+class HiddenSingle implements IRule
 {
-
-    private Puzzle puzzle;
-
-    @Override
-    public void run()
-    {
-        puzzle = Puzzle.getInstance();
-        while (!Thread.interrupted())
-        {
-            solve();
-        }
-    }
+    private Puzzle puzzle = Puzzle.getInstance();;
 
     public void solve()
     {
@@ -35,13 +24,8 @@ public class HiddenSingles implements Runnable
 
     private void solveRowHidden(int row, int column)
     {
-        for (int index=0; index<9; index++)
+        for (Integer candidate : puzzle.getCandidates(row, column))
         {
-            int candidate = Puzzle.getInstance().getCandidateValue(row, column, index);
-            if (candidate == 0)
-            {
-                continue;
-            }
             boolean isFound = false;
             for (int j = 1; j <= 9; j++)
             {
@@ -50,7 +34,7 @@ public class HiddenSingles implements Runnable
                     continue;
                 }
 
-                if (puzzle.containsCandidate(row, j, candidate))
+                if (puzzle.getCandidates(row, j).contains(candidate))
                 {
                     isFound = true;
                     break;
@@ -61,6 +45,7 @@ public class HiddenSingles implements Runnable
                 if (puzzle.setValue(row, column, candidate))
                 {
                     System.out.println(row + " " + column + " = " + candidate + " solveRowHidden");
+                    break;
                 }
             }
         }
@@ -68,13 +53,8 @@ public class HiddenSingles implements Runnable
 
     private void solveColumnHidden(int row, int column)
     {
-        for (int index=0; index<9; index++)
+        for (Integer candidate : puzzle.getCandidates(row, column))
         {
-            int candidate = Puzzle.getInstance().getCandidateValue(row, column, index);
-            if (candidate == 0)
-            {
-                continue;
-            }
             boolean isFound = false;
             for (int i = 1; i <= 9; i++)
             {
@@ -82,7 +62,7 @@ public class HiddenSingles implements Runnable
                 {
                     continue;
                 }
-                if (puzzle.containsCandidate(i, column, candidate))
+                if (puzzle.getCandidates(i, column).contains(candidate))
                 {
                     isFound = true;
                     break;
@@ -93,6 +73,7 @@ public class HiddenSingles implements Runnable
                 if (puzzle.setValue(row, column, candidate))
                 {
                     System.out.println(row + " " + column + " = " + candidate +" solveColumnHidden");
+                    break;
                 }
             }
         }
@@ -100,13 +81,8 @@ public class HiddenSingles implements Runnable
 
     private void solveCubeHidden(int row, int column)
     {
-        for (int index=0; index<9; index++)
+        for (Integer candidate : puzzle.getCandidates(row, column))
         {
-            int candidate = Puzzle.getInstance().getCandidateValue(row, column, index);
-            if (candidate == 0)
-            {
-                continue;
-            }
             boolean isFound = false;
             int startRow = getStartIndex(row);
             int startColumn = getStartIndex(column);
@@ -118,7 +94,7 @@ public class HiddenSingles implements Runnable
                     {
                         continue;
                     }
-                    if (puzzle.containsCandidate(i, j, candidate))
+                    if (puzzle.getCandidates(i, j).contains(candidate))
                     {
                         isFound = true;
                         break;
@@ -130,6 +106,7 @@ public class HiddenSingles implements Runnable
                 if (puzzle.setValue(row, column, candidate))
                 {
                     System.out.println(row + " " + column + " = " + candidate + " solveCubeHidden");
+                    break;
                 }
             }
         }

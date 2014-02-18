@@ -1,7 +1,8 @@
 package com.dreamsoft.data;
 
+import com.dreamsoft.rules.CandidateRemover;
 import com.google.common.collect.ArrayTable;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.List;
 
 /**
  * Created by Dreamuth on 2/15/14.
@@ -30,31 +31,9 @@ public class Puzzle
         table = inputReader.getInput();
     }
 
-//    public ArrayTable<Integer, Integer, Cell> getTable()
-//    {
-//        return table;
-//    }
-
-    public Integer getCandidateValue(int row, int column, int index)
+    public List<Integer> getCandidates(int row, int column)
     {
-        return table.get(row, column).getCandidates().get(index).get();
-    }
-
-    public void removeCandidateValue(int row, int column, Integer value)
-    {
-        table.get(row, column).removeCandidateValue(value);
-    }
-    public void removeAllCandidateValue(int row, int column)
-    {
-        table.get(row, column).removeAllCandidateValue();
-    }
-    public boolean containsCandidate(int row, int column, Integer value)
-    {
-        if (value < 1 || value > 9)
-        {
-            System.out.println("ErrorLog" + row + " " + column + " " + value);
-        }
-        return table.get(row, column).getCandidates().get(value -1).get() != 0;
+        return table.get(row, column).getCandidateValues();
     }
 
     public Integer getValue(int row, int column)
@@ -67,7 +46,11 @@ public class Puzzle
         boolean isSuccess = false;
         if (isValidValue(row, column, value))
         {
-            table.get(row, column).setValue(value);
+            Cell cell = table.get(row, column);
+            cell.setValue(value);
+            cell.getCandidateValues().clear();
+            CandidateRemover candidateRemover = new CandidateRemover();
+            candidateRemover.solve();
             isSuccess = true;
         }
         return isSuccess;
@@ -133,20 +116,14 @@ public class Puzzle
         return row;
     }
 
-    public int getCandidatesCount()
+    public int getAllCandidatesCount()
     {
         int count = 0;
         for (int row=1; row<=9; row++)
         {
             for (int column=1; column<=9; column++)
             {
-                for (AtomicInteger candidate : table.get(row, column).getCandidates())
-                {
-                    if (candidate.get() != 0)
-                    {
-                        count++;
-                    }
-                }
+                count += table.get(row, column).getCandidateValues().size();
             }
         }
         return count;
@@ -159,7 +136,7 @@ public class Puzzle
         {
             for (int column=1; column<=9; column++)
             {
-                if (table.get(row, column).getValue() != null)
+                if (getValue(row, column) != null)
                 {
                     count ++;
                 }
