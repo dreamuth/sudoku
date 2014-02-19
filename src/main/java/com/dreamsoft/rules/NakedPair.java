@@ -57,11 +57,12 @@ class NakedPair extends AbstractRule implements IRule
             System.out.println("RowPair: " + row + column + pairColumn + srcCandidates);
             for (int targetColumn = 1; targetColumn <=9; targetColumn++)
             {
-                if (targetColumn != column && pairColumn != targetColumn)
+                if (targetColumn != column && targetColumn != pairColumn)
                 {
                     puzzle.getCandidates(row, targetColumn).removeAll(srcCandidates);
                 }
             }
+//            new Printer().printSingleLineCandidates();
         }
     }
 
@@ -98,15 +99,66 @@ class NakedPair extends AbstractRule implements IRule
             System.out.println("ColumnPair: " + row + column + pairRow + srcCandidates);
             for (int targetRow = 1; targetRow <=9; targetRow++)
             {
-                if (targetRow != row && pairRow != targetRow)
+                if (targetRow != row && targetRow != pairRow)
                 {
                     puzzle.getCandidates(targetRow, column).removeAll(srcCandidates);
                 }
             }
+//            new Printer().printSingleLineCandidates();
         }
+
     }
 
     private void solveCubeHidden(int row, int column)
     {
+        boolean isFound = false;
+        int pairRow = 0;
+        int pairColumn = 0;
+        List<Integer> srcCandidates = puzzle.getCandidates(row, column);
+        int startRow = getStartIndex(row);
+        int startColumn = getStartIndex(column);
+        for (int targetRow = startRow; targetRow < startRow+3 && srcCandidates.size() == 2; targetRow++)
+        {
+            for (int targetColumn = startColumn; targetColumn <startColumn+3; targetColumn++)
+            {
+                if (row == targetRow && column == targetColumn)
+                {
+                    continue;
+                }
+                List<Integer> targetCandidates = puzzle.getCandidates(targetRow, targetColumn);
+                if (srcCandidates.size() == targetCandidates.size()
+                    && srcCandidates.containsAll(targetCandidates))
+                {
+                    if (!isFound)
+                    {
+                        isFound = true;
+                        pairRow = targetRow;
+                        pairColumn = targetColumn;
+                    }
+                    else
+                    {
+                        isFound = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (isFound)
+        {
+            System.out.println("CubePair: " + row + column + pairRow + pairColumn + srcCandidates);
+            for (int targetRow = startRow; targetRow < startRow+3; targetRow++)
+            {
+                for (int targetColumn = startColumn; targetColumn < startColumn+3; targetColumn++)
+                {
+                    if (!((row == targetRow && column == targetColumn)
+                        || (pairRow == targetRow && pairColumn == targetColumn)))
+                    {
+                        puzzle.getCandidates(targetRow, targetColumn).removeAll(srcCandidates);
+                    }
+                }
+            }
+//            new Printer().printSingleLineCandidates();
+        }
     }
 }

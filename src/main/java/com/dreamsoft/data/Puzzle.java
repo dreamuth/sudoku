@@ -46,6 +46,7 @@ public class Puzzle
         boolean isSuccess = false;
         if (isValidValue(row, column, value))
         {
+//            new Printer().printSingleLineCandidates();
             Cell cell = table.get(row, column);
             cell.setValue(value);
             cell.getCandidateValues().clear();
@@ -68,7 +69,7 @@ public class Puzzle
         boolean isValid = true;
         for (int column=1; column<=9; column++)
         {
-            if (getValue(row, column) == value)
+            if (getValue(row, column).equals(value))
             {
                 isValid = false;
             }
@@ -81,7 +82,7 @@ public class Puzzle
         boolean isValid = true;
         for (int row=1; row<=9; row++)
         {
-            if (getValue(row, column) == value)
+            if (getValue(row, column).equals(value))
             {
                 isValid = false;
             }
@@ -98,7 +99,7 @@ public class Puzzle
         {
             for (int j=startColumn; j<startColumn+3; j++)
             {
-                if (getValue(i, j) == value)
+                if (getValue(i, j).equals(value))
                 {
                     isValid = false;
                 }

@@ -92,4 +92,34 @@ public class Printer
             }
         }
     }
+
+    public void printSingleLineCandidates()
+    {
+        System.out.println("----------------------");
+        for (Integer i=1; i<=9; i++)
+        {
+            System.out.print("|");
+            for (Integer j=1; j<=9; j++)
+            {
+                for (int index = 0; index<9; index++)
+                {
+                    String val = " ";
+                    if (puzzle.getCandidates(i, j).size()>index)
+                    {
+                        val = String.valueOf(puzzle.getCandidates(i, j).get(index));
+                    }
+                    System.out.print(val);
+                }
+                if (j % 3 == 0)
+                {
+                    System.out.print(" ## ");
+                }
+            }
+            System.out.println();
+            if (i % 3 == 0)
+            {
+                System.out.println("----------------------");
+            }
+        }
+    }
 }
